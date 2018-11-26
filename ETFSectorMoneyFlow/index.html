@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My first Chartist Tests</title>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+      <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+  </head>
+  <body>
+    <!-- Site content goes here !-->
+
+    <div class="ct-chart ct-perfect-fourth"></div>
+
+    <script>
+
+    function readTextFile(file, callback) {
+    var rawFile = new XMLHttpRequest();
+    rawFile.overrideMimeType("application/json");
+    rawFile.open("GET", file, true);
+    rawFile.onreadystatechange = function() {
+        if (rawFile.readyState === 4 && rawFile.status == "200") {
+            callback(rawFile.responseText);
+        }
+    }
+    rawFile.send(null);
+    }
+
+    
+    readTextFile("BasicMaterials_XLB.json", function(text){
+      readTextFile("ConsumerDiscretionary_XLY.json",function(text2){
+        readTextFile("ConsumerStaples_XLP.json",function(text3){
+          readTextFile("Energy_XLE.json",function(text4){
+            readTextFile("FinancialServices_XLF.json",function(text5){
+              readTextFile("Healthcare_XLV.json",function(text6){
+                readTextFile("Industrial_XLI.json",function(text7){
+                  readTextFile("Technology_XLK.json",function(text8){
+                    readTextFile("Utilities_XLU.json",function(text9){
+
+                      var data = JSON.parse(text);
+                      var data2 = JSON.parse(text2);
+                      var data3 = JSON.parse(text3);
+                      var data4 = JSON.parse(text4);
+                      var data5 = JSON.parse(text5);
+                      var data6 = JSON.parse(text6);
+                      var data7 = JSON.parse(text7);
+                      var data8 = JSON.parse(text8);
+                      var data9 = JSON.parse(text9);
+
+                      var labels = [];
+                      var series = [];
+                      var series_2 = [];
+                      var series_3 = [];
+                      var series_4 = [];
+                      var series_5 = [];
+                      var series_6 = [];
+                      var series_7 = [];
+                      var series_8 = [];
+                      var series_9 = [];
+
+
+                      for(var i=0;i<data.length;i++){
+                        labels.push(data[i]["date"]);
+                        series.push(data[i]["close"]);
+                        series_2.push(data2[i]["close"]);
+                        series_3.push(data3[i]["close"]);
+                        series_4.push(data4[i]["close"]);
+                        series_5.push(data5[i]["close"]);
+                        series_6.push(data6[i]["close"]);
+                        series_7.push(data7[i]["close"]);
+                        series_8.push(data8[i]["close"]);
+                        series_9.push(data9[i]["close"]);
+                      }
+
+                      // Create a simple line chart
+                      var data = {
+                        // A labels array that can contain any sort of values
+                        labels: labels,
+                        // Our series array that contains series objects or in this case series data arrays
+                        series: [
+                          series,series_2,series_3,series_4,series_5,series_6,series_7,series_8,series_9
+                        ]
+                      };
+
+                      // As options we currently only set a static size of 300x200 px
+                      var options = {
+                        width: '4000px',
+                        height: '700px',
+                        showPoint: false
+                      };
+
+
+
+                      // In the global name space Chartist we call the Line function to initialize a line chart. As a first parameter we pass in a selector where we would like to get our chart created. Second parameter is the actual data object and as a third parameter we pass in our options
+                      new Chartist.Line('.ct-chart', data, options);
+
+                    })})})})})})})
+
+      })
+
+
+
+    });
+
+    </script>
+  </body>
+</html>

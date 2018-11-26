@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My first Chartist Tests</title>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+      <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+  </head>
+  <body>
+    <!-- Site content goes here !-->
+
+    <div class="ct-chart ct-perfect-fourth"></div>
+
+    <script>
+
+    function readTextFile(file, callback) {
+    var rawFile = new XMLHttpRequest();
+    rawFile.overrideMimeType("application/json");
+    rawFile.open("GET", file, true);
+    rawFile.onreadystatechange = function() {
+        if (rawFile.readyState === 4 && rawFile.status == "200") {
+            callback(rawFile.responseText);
+        }
+    }
+    rawFile.send(null);
+    }
+
+
+    readTextFile("BOND_BND.json", function(text){
+      readTextFile("GOLD_GLD.json",function(text2){
+        readTextFile("OIL_DBO.json",function(text3){
+          readTextFile("SP_SPY.json",function(text4){
+
+                      var data = JSON.parse(text);
+                      var data2 = JSON.parse(text2);
+                      var data3 = JSON.parse(text3);
+                      var data4 = JSON.parse(text4);
+
+                      var labels = [];
+                      var series = [];
+                      var series_2 = [];
+                      var series_3 = [];
+                      var series_4 = [];
+
+
+                      for(var i=0;i<data.length;i++){
+                        labels.push(data[i]["date"]);
+                        series.push(data[i]["close"]);
+                        series_2.push(data2[i]["close"]);
+                        series_3.push(data3[i]["close"]);
+                        series_4.push(data4[i]["close"]);
+                      }
+
+                      // Create a simple line chart
+                      var data = {
+                        // A labels array that can contain any sort of values
+                        labels: labels,
+                        // Our series array that contains series objects or in this case series data arrays
+                        //4 SP_SPY
+                        //lowest oil
+                        series: [
+                          series,series_2,series_3,series_4
+                        ]
+                      };
+
+                      // As options we currently only set a static size of 300x200 px
+                      var options = {
+                        width: '4000px',
+                        height: '1500px',
+                        showPoint: false
+                      };
+
+
+
+                      // In the global name space Chartist we call the Line function to initialize a line chart. As a first parameter we pass in a selector where we would like to get our chart created. Second parameter is the actual data object and as a third parameter we pass in our options
+                      new Chartist.Line('.ct-chart', data, options);
+
+                    })})
+
+      })
+
+
+
+    });
+
+    </script>
+  </body>
+</html>
